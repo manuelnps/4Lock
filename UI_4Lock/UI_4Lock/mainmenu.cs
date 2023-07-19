@@ -1,4 +1,4 @@
-﻿//using CacifoAtribuid    a;
+﻿//using CacifoAtribuida;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +30,7 @@ namespace UI_4Lock
         IFirebaseConfig ifc = new FirebaseConfig()
         {
             AuthSecret = "Dn3ed7cubq8f1x9ycDH28gtWg0AL0Xxpcit8BonH",
-            BasePath = "https://bdcacifos-a6966-default-rtdb.firebaseio.com/",
+            BasePath = "https://testcacifos-default-rtdb.firebaseio.com/",
         };
     
 
@@ -95,10 +95,9 @@ namespace UI_4Lock
             while (true)
             {
                 await Task.Delay(1000);
-                FirebaseResponse res = await client.GetAsync(@"Nome/");
+                FirebaseResponse res = await client.GetAsync(@"TheUsers/12");
                 Dictionary<string, string> data = JsonConvert.DeserializeObject<Dictionary<string, string>>(res.Body.ToString());
                 updateRTB(data);
-
             }
         }
         
@@ -106,10 +105,18 @@ namespace UI_4Lock
         
         void updateRTB(Dictionary<string, string> record)
         {
-           //parte de limpar
-            string box = uc.getBoxText(); 
-            box += record.ElementAt(0).Key + record.ElementAt(0).Value;
-        
+            //parte de limpar
+            string info1 = record.ElementAt(0).Key + ": " + record.ElementAt(0).Value;
+            uc.setBoxText(info1);
+            
+            /*
+            string info1 = record.ElementAt(0).Key + ": " + record.ElementAt(0).Value;
+            string info2 = record.ElementAt(1).Key + ": " + record.ElementAt(1).Value;
+            string info3 = record.ElementAt(2).Key + ": " + record.ElementAt(2).Value;
+
+            string finalText = info1 + Environment.NewLine + info2 + Environment.NewLine + info3 + Environment.NewLine;
+            uc.setBoxText(finalText);
+            */
         }
   
     }

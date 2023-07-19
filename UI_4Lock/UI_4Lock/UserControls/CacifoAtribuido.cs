@@ -35,6 +35,11 @@ namespace UI_4Lock.UserControls
             return richTextBox1.Text;
         }
 
+        public void setBoxText(string text) {
+            richTextBox1.Text = text;
+            
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
 
