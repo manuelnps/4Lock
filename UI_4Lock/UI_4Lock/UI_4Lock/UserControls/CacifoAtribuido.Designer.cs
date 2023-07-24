@@ -49,6 +49,7 @@
             this.Controls.Add(this.richTextBox1);
             this.Name = "CacifoAtribuido";
             this.Size = new System.Drawing.Size(1055, 532);
+            this.Load += new System.EventHandler(this.CacifoAtribuido_Load);
             this.ResumeLayout(false);
 
         }

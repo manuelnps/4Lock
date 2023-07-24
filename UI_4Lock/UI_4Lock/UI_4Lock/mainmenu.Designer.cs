@@ -173,7 +173,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "mainmenu";
             this.Text = "mainmenu";
-            this.Load += new System.EventHandler(this.mainmenu_Load);
+           // this.Load += new System.EventHandler(this.mainmenu_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
