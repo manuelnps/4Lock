@@ -16,7 +16,7 @@ namespace UI_4Lock
     
     public partial class Form1 : Form
     {
-        GlobalData con;
+        public static string NMR;
         public Form1()
         {
             InitializeComponent();
@@ -42,11 +42,14 @@ namespace UI_4Lock
 
         }
 
+        public static string getNMR()
+        {
+            return NMR;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost;uid=root;pwd=Horsegrupo4;database=4lock";
-            //string connect = con.connect(); Falar ao tiago ?
-            MySqlConnection connection = new MySqlConnection(connect);
+            MySqlConnection connection = new MySqlConnection(GlobalData.Connect());
             connection.Open();
             MySqlCommand login = new MySqlCommand("select CARGO from tag_cargo where TAG = '" + int.Parse(textBox1.Text) + "'", connection);
             MySqlDataReader reader = login.ExecuteReader();
@@ -57,13 +60,26 @@ namespace UI_4Lock
                 string cargo = reader["CARGO"].ToString(); // Get the cargo value from the reader
                 if (string.Equals(cargo, "COLAB", StringComparison.OrdinalIgnoreCase))
                 {
+                    reader.Close();
+                    MySqlCommand getNMR = new MySqlCommand("select NMR from tag_cargo where TAG = '" + int.Parse(textBox1.Text) + "'", connection);
+                    MySqlDataReader readNMR = getNMR.ExecuteReader();
+                    //arranjar a string
+                    if (readNMR.Read())
+                    {
+                        NMR = readNMR["NMR"].ToString();
+                        readNMR.Close();
+                        connection.Close();
+                    }
+
                     new mainmenu().Show();
-                    this.Hide();
+                    this.Hide();                  
                 }
                 else
                 {
                     textBox1.Clear();
                     textBox1.Focus();
+                    reader.Close();
+                    connection.Close();
                 }
             }
             else
@@ -71,9 +87,10 @@ namespace UI_4Lock
                 MessageBox.Show("Por favor fale com os Recursos Humanos","Cartão não encontrado",MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBox1.Clear();
                 textBox1.Focus();
+                reader.Close();
+                connection.Close();
             }
-            reader.Close();
-            connection.Close();
+            
         }
 
         private void label2_Click(object sender, EventArgs e)
