@@ -74,25 +74,24 @@ namespace UI_4Lock
             if (getposbalneario.Read())
             {
                 uc.setBoxText2(getposbalneario["POS"].ToString()); // Get the cargo value from the reader
-                getzonabalneario.Close();
+                getposbalneario.Close();
             }
             /*
-            MySqlCommand balneariopos = new MySqlCommand("select POS from balnearios where NMR = '" + int.Parse(nmrgotten) + "'", connectionatribuircacifo);
-            MySqlDataReader getposbalneario = balneariopos.ExecuteReader();
-            if (getposbalneario.Read())
-            {
-                uc.setBoxText2(getposbalneario["POS"].ToString()); // Get the cargo value from the reader
-                getzonabalneario.Close();
-            }
-
-            MySqlCommand balneariopos = new MySqlCommand("select POS from balnearios where NMR = '" + int.Parse(nmrgotten) + "'", connectionatribuircacifo);
-            MySqlDataReader getposbalneario = balneariopos.ExecuteReader();
-            if (getposbalneario.Read())
-            {
-                uc.setBoxText2(getposbalneario["POS"].ToString()); // Get the cargo value from the reader
-                getzonabalneario.Close();
-            }
+             * Adicionar método para procurar em todas as tabelas. Se retornar nulo não é essa zona, se retornar não nulo então é esse o cacifo de proximidade.
             */
+
+            uc.setBoxText3("V"); // Get the cargo value from the reader
+
+
+            MySqlCommand proxpos1 = new MySqlCommand("select POS1 from prox_v where NMR = '" + int.Parse(nmrgotten) + "'", connectionatribuircacifo);
+            MySqlDataReader getpos1prox = proxpos1.ExecuteReader();
+            if (getpos1prox.Read())
+            {
+                uc.setBoxText4(getpos1prox["POS1"].ToString()); // Get the cargo value from the reader
+                getpos1prox.Close();
+            }
+           
+            connectionatribuircacifo.Close();
 
         }
 

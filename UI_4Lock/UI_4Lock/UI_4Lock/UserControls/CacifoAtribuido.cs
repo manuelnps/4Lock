@@ -89,5 +89,10 @@ namespace UI_4Lock.UserControls
         {
 
         }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
