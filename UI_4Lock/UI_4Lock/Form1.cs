@@ -17,6 +17,8 @@ namespace UI_4Lock
     public partial class Form1 : Form
     {
         public static string NMR;
+        public static string ZPROX;
+        public static string tablename;
         public Form1()
         {
             InitializeComponent();
@@ -47,6 +49,15 @@ namespace UI_4Lock
             return NMR;
         }
 
+        public static string getZPROX()
+        {
+            return ZPROX;
+        }
+
+        public static string getTablename()
+        {
+            return "prox_" + getZPROX();
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             MySqlConnection connection = new MySqlConnection(GlobalData.Connect());
@@ -61,12 +72,13 @@ namespace UI_4Lock
                 if (string.Equals(cargo, "COLAB", StringComparison.OrdinalIgnoreCase))
                 {
                     reader.Close();
-                    MySqlCommand getNMR = new MySqlCommand("select NMR from tag_cargo where TAG = '" + int.Parse(textBox1.Text) + "'", connection);
+                    MySqlCommand getNMR = new MySqlCommand("select NMR, ZPROX from tag_cargo where TAG = '" + int.Parse(textBox1.Text) + "'", connection);
                     MySqlDataReader readNMR = getNMR.ExecuteReader();
                     //arranjar a string
                     if (readNMR.Read())
                     {
                         NMR = readNMR["NMR"].ToString();
+                        ZPROX = readNMR["ZPROX"].ToString();
                         readNMR.Close();
                         connection.Close();
                     }
