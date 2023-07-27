@@ -60,6 +60,7 @@
             this.Controls.Add(this.guna2Button4);
             this.Name = "AbandonarCacifo";
             this.Size = new System.Drawing.Size(1055, 532);
+            this.Load += new System.EventHandler(this.AbandonarCacifo_Load);
             this.ResumeLayout(false);
 
         }

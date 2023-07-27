@@ -1,4 +1,5 @@
 ﻿using MindFusion.Charting;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls.WebParts;
+using static UI_4Lock.GlobalData;
 
 namespace UI_4Lock
 {
@@ -20,10 +22,10 @@ namespace UI_4Lock
 
             public Connection()
             {
-                server = "localhost";
-                uid = "root";
-                pwd = "Horsegrupo4";
-                database = "4lock";
+                this.server = "localhost";
+                this.uid = "root";
+                this.pwd = "Horsegrupo4";
+                this.database = "4lock";
             }
         }
 
@@ -34,38 +36,19 @@ namespace UI_4Lock
             return settings;
             //"server=localhost;uid=root;pwd=Horsegrupo4;database=4lock";
         }
+
+        public static void executeSafeQuery(MySqlConnection conn, string query, List<Tuple<string, object>> obj)
+        {
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            foreach (var item in obj)
+            {
+                cmd.Parameters.AddWithValue(item.Item1, item.Item2);
+            }
+            using (MySqlDataReader dr = cmd.ExecuteReader())
+            {
+                
+            }
+        }
+
     }
 }
-
-/*
- class DBconnection {
-
-
-
-
-    private string name;
-
-    private string pw;
-
-    private string db;
-
-
-
-
-    void setname()...
-
-   
-
-    getConnection() ...
-
-
-
-
-    //... funções para aceder à db
-
-}
-
-
-
-
-export? dbConnection = DBconnection();*/

@@ -31,6 +31,14 @@ namespace UI_4Lock
            userControl.BringToFront();
         }
 
+        public void addUserControl2(UserControl userControl)
+        {
+            userControl.Dock = DockStyle.Fill;
+            panelContainer.Controls.Clear();
+            panelContainer.Controls.Add(userControl);
+            userControl.BringToFront();
+        }
+
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
 
@@ -72,6 +80,7 @@ namespace UI_4Lock
                 getposbalneario.Close();
             }
            
+            
             uc.setBoxText3(Form1.getZPROX()); // Get the cargo value from the reader
 
             MySqlCommand proxpos1 = new MySqlCommand("select POS1 from "+ Form1.getTablename() + " where NMR = '" + int.Parse(Form1.getNMR()) + "'", connectionatribuircacifo);

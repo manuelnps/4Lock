@@ -32,13 +32,10 @@ namespace UI_4Lock.UserControls
         {
             MySqlConnection connectiochecknabandonarcacifo = new MySqlConnection(GlobalData.Connect());
             connectiochecknabandonarcacifo.Open();
-            //*********************************************     Procurar onde alterar    *************************************************************************
-            
-            
-            
-            
+
             //*********************************************  condição ja abandonou cacifo  ***********************************************************************
-            MySqlCommand checkabandonarcacifo = new MySqlCommand("select POS1 from " + Form1.getTablename() + " where NMR = '" + Form1.getNMR() + "' and POS1 is NULL", connectiochecknabandonarcacifo);
+            MySqlCommand checkabandonarcacifo = new MySqlCommand("select POS1 from " + Form1.getTablename() + " where NMR = '" + Form1.getNMR() + "' and POS1 = 9999", connectiochecknabandonarcacifo);
+            //MySqlCommand checkabandonarcacifo = new MySqlCommand("select POS1 from " + Form1.getTablename() + " where NMR = '" + Form1.getNMR() + "' and POS1 is NULL", connectiochecknabandonarcacifo);
             MySqlDataReader readcheckabandonarcacifo = checkabandonarcacifo.ExecuteReader();
             if (readcheckabandonarcacifo.Read()) // Check if the reader has rows
             {
@@ -53,7 +50,7 @@ namespace UI_4Lock.UserControls
                 //*********************************************   Ação de remover o cacifo  **************************************************************************
                 MySqlConnection connectionabandonarcacifo = new MySqlConnection(GlobalData.Connect());
                 connectionabandonarcacifo.Open();
-                MySqlCommand leaveprox = new MySqlCommand("update "+ Form1.getTablename() + " set POS2 = POS1, POS1 = NULL, MANUT = 1 where NMR = '" + Form1.getNMR() + "'", connectionabandonarcacifo);
+                MySqlCommand leaveprox = new MySqlCommand("update "+ Form1.getTablename() + " set POS2 = POS1, POS1 = 9999, MANUT = 1 where NMR = '" + Form1.getNMR() + "'", connectionabandonarcacifo);
                 int rowsAffected = leaveprox.ExecuteNonQuery();
 
                 if (rowsAffected > 0)
@@ -71,5 +68,9 @@ namespace UI_4Lock.UserControls
             }
         }
 
+        private void AbandonarCacifo_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
