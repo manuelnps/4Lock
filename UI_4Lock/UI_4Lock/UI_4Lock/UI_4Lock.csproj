@@ -145,13 +145,37 @@
     <Compile Include="mainmenu.Designer.cs">
       <DependentUpon>mainmenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="mainmenuCUET.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mainmenuCUET.Designer.cs">
+      <DependentUpon>mainmenuCUET.cs</DependentUpon>
+    </Compile>
+    <Compile Include="mainmenuRH.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mainmenuRH.Designer.cs">
+      <DependentUpon>mainmenuRH.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\AbandonarBalneario.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\AbandonarBalneario.Designer.cs">
+      <DependentUpon>AbandonarBalneario.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\AbandonarCacifo.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UserControls\AbandonarCacifo.Designer.cs">
       <DependentUpon>AbandonarCacifo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\AtribuirBalneario.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\AtribuirBalneario.Designer.cs">
+      <DependentUpon>AtribuirBalneario.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControls\CacifoAtribuido.cs">
       <SubType>UserControl</SubType>
@@ -165,11 +189,29 @@
     <Compile Include="UserControls\EscolherCacifo.Designer.cs">
       <DependentUpon>EscolherCacifo.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\RemoverColaborador.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\RemoverColaborador.Designer.cs">
+      <DependentUpon>RemoverColaborador.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ValidarCacifo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\ValidarCacifo.Designer.cs">
+      <DependentUpon>ValidarCacifo.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="mainmenu.resx">
       <DependentUpon>mainmenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mainmenuCUET.resx">
+      <DependentUpon>mainmenuCUET.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mainmenuRH.resx">
+      <DependentUpon>mainmenuRH.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -180,14 +222,26 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UserControls\AbandonarBalneario.resx">
+      <DependentUpon>AbandonarBalneario.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\AbandonarCacifo.resx">
       <DependentUpon>AbandonarCacifo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\AtribuirBalneario.resx">
+      <DependentUpon>AtribuirBalneario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\CacifoAtribuido.resx">
       <DependentUpon>CacifoAtribuido.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\EscolherCacifo.resx">
       <DependentUpon>EscolherCacifo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\RemoverColaborador.resx">
+      <DependentUpon>RemoverColaborador.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ValidarCacifo.resx">
+      <DependentUpon>ValidarCacifo.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

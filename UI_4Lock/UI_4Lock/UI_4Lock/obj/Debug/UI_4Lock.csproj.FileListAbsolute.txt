@@ -105,3 +105,9 @@ F:\cavalo\UI\UI_4Lock\UI_4Lock\UI_4Lock\bin\Debug\System.Memory.xml
 F:\cavalo\UI\UI_4Lock\UI_4Lock\UI_4Lock\bin\Debug\System.Numerics.Vectors.xml
 F:\cavalo\UI\UI_4Lock\UI_4Lock\UI_4Lock\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 F:\cavalo\UI\UI_4Lock\UI_4Lock\UI_4Lock\bin\Debug\System.Threading.Tasks.Extensions.xml
+F:\cavalo\UI\UI_4Lock\UI_4Lock\UI_4Lock\obj\Debug\UI_4Lock.mainmenuCUET.resources
+F:\cavalo\UI\UI_4Lock\UI_4Lock\UI_4Lock\obj\Debug\UI_4Lock.UserControls.ValidarCacifo.resources
+F:\cavalo\UI\UI_4Lock\UI_4Lock\UI_4Lock\obj\Debug\UI_4Lock.mainmenuRH.resources
+F:\cavalo\UI\UI_4Lock\UI_4Lock\UI_4Lock\obj\Debug\UI_4Lock.UserControls.AbandonarBalneario.resources
+F:\cavalo\UI\UI_4Lock\UI_4Lock\UI_4Lock\obj\Debug\UI_4Lock.UserControls.AtribuirBalneario.resources
+F:\cavalo\UI\UI_4Lock\UI_4Lock\UI_4Lock\obj\Debug\UI_4Lock.UserControls.RemoverColaborador.resources

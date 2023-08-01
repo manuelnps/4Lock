@@ -105,12 +105,30 @@ namespace UI_4Lock
                     new mainmenu().Show();
                     this.Hide();                  
                 }
-                else
+                else if(string.Equals(cargo, "CUET", StringComparison.OrdinalIgnoreCase))
                 {
-                    textBox1.Clear();
-                    textBox1.Focus();
+                    reader.Close();
+                    MySqlCommand getNMR = new MySqlCommand("select NMR, ZPROX from tag_cargo where TAG = " + "@tag" + "", connection);
+                    getNMR.Parameters.AddWithValue("@tag", int.Parse(textBox1.Text));
+                    MySqlDataReader readNMR = getNMR.ExecuteReader();
+                    //arranjar a string
+                    if (readNMR.Read())
+                    {
+                        NMR = readNMR["NMR"].ToString();
+                        //ZPROX = readNMR["ZPROX"].ToString();
+                        readNMR.Close();
+                        connection.Close();
+                    }
+
+                    new mainmenuCUET().Show();
+                    this.Hide();
+                }
+                else if (string.Equals(cargo,"RH", StringComparison.OrdinalIgnoreCase))
+                {
                     reader.Close();
                     connection.Close();
+                    new mainmenuRH().Show();
+                    this.Hide();
                 }
             }
             else
