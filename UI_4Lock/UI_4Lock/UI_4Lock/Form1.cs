@@ -72,6 +72,10 @@ namespace UI_4Lock
             return ZPROX;
         }
 
+        public static string getTablenameArg(string name)
+        {
+            return "prox_" + name;
+        }
         public static string getTablename()
         {
             return "prox_" + getZPROX();

@@ -47,7 +47,7 @@
             // richTextBox1
             // 
             this.richTextBox1.Location = new System.Drawing.Point(324, 239);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(377, 54);
             this.richTextBox1.TabIndex = 8;
@@ -97,6 +97,7 @@
             this.guna2Button1.Size = new System.Drawing.Size(281, 63);
             this.guna2Button1.TabIndex = 10;
             this.guna2Button1.Text = "Atribuir Cacifo de Balneário ZONA B";
+            this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click);
             // 
             // AtribuirBalneario
             // 
@@ -106,7 +107,7 @@
             this.Controls.Add(this.guna2Button4);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AtribuirBalneario";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Size = new System.Drawing.Size(1055, 532);

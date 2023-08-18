@@ -48,11 +48,14 @@ namespace UI_4Lock
             this.uc = new CacifoAtribuido();
             addUserControl(uc);
 
+
+
             MySqlConnection connectionatribuircacifo = new MySqlConnection(GlobalData.Connect());
             connectionatribuircacifo.Open();
-            //MessageBox.Show(Form1.getNMR());
             MySqlCommand balneariozona = new MySqlCommand("select ZONA from balnearios where NMR = '" + int.Parse(Form1.getNMR()) + "'", connectionatribuircacifo);
             MySqlDataReader getzonabalneario = balneariozona.ExecuteReader();
+
+            //Não entra nestes Ifs por alguma razao e explode aqui <-----------------------------------------------------------------
             if (getzonabalneario.Read())
             {
                 uc.setBoxText(getzonabalneario["ZONA"].ToString()); // Get the cargo value from the reader
@@ -61,6 +64,8 @@ namespace UI_4Lock
 
             MySqlCommand balneariopos = new MySqlCommand("select POS from balnearios where NMR = '" + int.Parse(Form1.getNMR()) + "'", connectionatribuircacifo);
             MySqlDataReader getposbalneario = balneariopos.ExecuteReader();
+
+            //Não entra nestes Ifs por alguma razao e explode aqui <-----------------------------------------------------------------
             if (getposbalneario.Read())
             {
                 uc.setBoxText2(getposbalneario["POS"].ToString()); // Get the cargo value from the reader
@@ -79,8 +84,6 @@ namespace UI_4Lock
             }
 
             connectionatribuircacifo.Close();
-
-
         }
 
         private void guna2Button2_Click(object sender, EventArgs e)
