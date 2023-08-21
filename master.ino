@@ -93,7 +93,9 @@ void loop() {
    
   if (result == ESP_OK) {
     Serial.println("Sent with success");
+    Serial.println("xslave=");
     Serial.print(xii);
+    Serial.println("yslave=");
     Serial.print(yii);
   }
   else {
