@@ -69,18 +69,18 @@ namespace UI_4Lock
             if (getzonabalneario.Read())
             {
                 uc.setBoxText(getzonabalneario["ZONA"].ToString()); // Get the cargo value from the reader
-                getzonabalneario.Close();
             }
-            
+            getzonabalneario.Close();
+
             MySqlCommand balneariopos = new MySqlCommand("select POS from balnearios where NMR = '" + int.Parse(Form1.getNMR()) + "'", connectionatribuircacifo);
             MySqlDataReader getposbalneario = balneariopos.ExecuteReader();
             if (getposbalneario.Read())
             {
                 uc.setBoxText2(getposbalneario["POS"].ToString()); // Get the cargo value from the reader
-                getposbalneario.Close();
             }
-           
-            
+                getposbalneario.Close();
+
+
             uc.setBoxText3(Form1.getZPROX()); // Get the cargo value from the reader
 
             MySqlCommand proxpos1 = new MySqlCommand("select POS1 from "+ Form1.getTablename() + " where NMR = '" + int.Parse(Form1.getNMR()) + "'", connectionatribuircacifo);

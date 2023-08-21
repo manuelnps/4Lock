@@ -28,17 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.guna2Button4 = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.imageList2 = new System.Windows.Forms.ImageList(this.components);
+            this.imageList3 = new System.Windows.Forms.ImageList(this.components);
+            this.imageList4 = new System.Windows.Forms.ImageList(this.components);
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(248, 162);
+            this.label1.Location = new System.Drawing.Point(263, 159);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(517, 39);
             this.label1.TabIndex = 7;
@@ -46,10 +51,11 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(324, 239);
+            this.richTextBox1.Font = new System.Drawing.Font("Montserrat ExtraBold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.richTextBox1.Location = new System.Drawing.Point(386, 241);
             this.richTextBox1.Margin = new System.Windows.Forms.Padding(4);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(377, 54);
+            this.richTextBox1.Size = new System.Drawing.Size(279, 54);
             this.richTextBox1.TabIndex = 8;
             this.richTextBox1.Text = "";
             // 
@@ -99,10 +105,35 @@
             this.guna2Button1.Text = "Atribuir Cacifo de Balneário ZONA B";
             this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click);
             // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // imageList2
+            // 
+            this.imageList2.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList2.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList2.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // imageList3
+            // 
+            this.imageList3.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList3.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList3.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // imageList4
+            // 
+            this.imageList4.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList4.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList4.TransparentColor = System.Drawing.Color.Transparent;
+            // 
             // AtribuirBalneario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.guna2Button1);
             this.Controls.Add(this.guna2Button4);
             this.Controls.Add(this.richTextBox1);
@@ -123,5 +154,9 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private Guna.UI2.WinForms.Guna2Button guna2Button4;
         private Guna.UI2.WinForms.Guna2Button guna2Button1;
+        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ImageList imageList2;
+        private System.Windows.Forms.ImageList imageList3;
+        private System.Windows.Forms.ImageList imageList4;
     }
 }
