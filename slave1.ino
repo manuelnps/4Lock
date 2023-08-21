@@ -93,6 +93,10 @@ void loop() {
    
   if (result == ESP_OK) {
     Serial.println("Sent with success");
+    Serial.println("xmaster=");
+    Serial.print(xii);
+    Serial.println("ymaster=");
+    Serial.print(yii);
   }
   else {
     Serial.println("Error sending the data");
