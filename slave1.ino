@@ -99,7 +99,7 @@ void loop() {
     Serial.print(yii);
   }
   else {
-    Serial.println("Error sending the data");
+    Serial.println("Error sending the data"); // FAZER ACKS PARA TENTAR ENVIAR A INFORMAÇÃO NOVAMENTE AQUI TAMBÉM!
   }
   delay(2000);
 }
