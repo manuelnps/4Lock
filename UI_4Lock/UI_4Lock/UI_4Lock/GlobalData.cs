@@ -22,9 +22,9 @@ namespace UI_4Lock
 
             public Connection()
             {
-                this.server = "localhost";
+                this.server = "172.32.146.209";
                 this.uid = "root";
-                this.pwd = "Horsegrupo4";
+                this.pwd = "";
                 this.database = "4lock";
             }
         }
