@@ -1,6 +1,23 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <SPIFFS.h>
+#include <time.h>
+#include <sntp.h>
+#include <LiquidCrystal_I2C.h>
+#include <SPI.h>
+#include <MFRC522.h>
+
+
+#define SS_PIN 5
+#define RST_PIN 4
+
+String UID[] = {
+  "A9 56 6F 72",
+  "49 E9 DD 71"
+};
+
+LiquidCrystal_I2C lcd(0x3F, 16, 2);
+MFRC522 rfid(SS_PIN, RST_PIN);
 
 
 const char* ssid = "Redmi_Carol";
@@ -10,11 +27,32 @@ String URL_NMR = "http://192.168.43.169/4lock_project/readdata_NMR.php";
 String URL_POS = "http://192.168.43.169/4lock_project/readdata_POS.php";
 String URL_NMR_POS = "http://192.168.43.169/4lock_project/readdata_NMR_POS.php";
 
-// Rest of your WiFi setup and connection code
+const char* ntpServer = "pool.ntp.org";
+const long gmtOffset_sec = 0; // Your GMT offset in seconds6
+const int daylightOffset_sec = 3600; // Your daylight offset in seconds
+
+
+void syncNTPTime() {
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  Serial.println("Waiting for NTP time synchronization...");
+  while (!time(nullptr)) {
+    delay(1000);
+    Serial.println("Waiting for NTP time...");
+  }
+  Serial.println("NTP time synchronized");
+}
 
 void setup() {
-  Serial.begin(115200);
-  connectWiFi();
+  Serial.begin(9600);
+
+  connectWiFi(); //Wi-Fi initialization
+  syncNTPTime(); //NTP initialization
+
+  lcd.init();    //LCD initializations
+  lcd.backlight();
+  
+  SPI.begin();   //rfid initializations
+  rfid.PCD_Init();
 
   if (!SPIFFS.begin(true)) {
     Serial.println("An error occurred while mounting SPIFFS");
@@ -27,6 +65,84 @@ void loop() {
     connectWiFi();
   }
 
+  time_t now = time(nullptr);
+  struct tm* timeinfo;
+  timeinfo = localtime(&now);
+
+  /********************************Ficheiro diário*********************************************/
+  if (timeinfo->tm_hour == 15 &&
+      timeinfo->tm_min == 52 &&
+      timeinfo->tm_sec == 30) {
+      getFiles();
+  }
+  /********************************************************************************************/
+  /**************************************Leitura da TAG****************************************/
+
+
+  lcd.setCursor(4, 0);
+  lcd.print("Bem-vindo!");
+  lcd.setCursor(1, 1);
+  lcd.print("Passe o cartao");
+
+  if (!rfid.PICC_IsNewCardPresent())
+    return;
+  if (!rfid.PICC_ReadCardSerial())
+    return;
+
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Aguarde");
+  
+  String ID = "";
+  for (byte i = 0; i < rfid.uid.size; i++) {
+    lcd.print(".");
+    ID.concat(String(rfid.uid.uidByte[i] < 0x10 ? " 0" : " "));
+    ID.concat(String(rfid.uid.uidByte[i], HEX));
+    delay(300);
+  }
+  ID.toUpperCase();
+
+  bool accessGranted = false;
+  for (int i = 0; i < sizeof(UID) / sizeof(UID[0]); i++) {
+    if (ID.substring(1) == UID[i]) {
+      accessGranted = true;
+      break;
+    }
+  }
+   /********************************************************************************************/
+  /*****************************Procura da posiçao do cacido***********************************/
+  int NMRPos = findNMRValue(int targetTAG)
+  /********************************************************************************************/
+  if (accessGranted) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print(" Cacifo aberto");
+    delay(1500);
+    lcd.clear();
+  } else {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print(" Acesso negado");
+    delay(1500);
+    lcd.clear();
+  }
+
+}
+  
+
+int search(int NMRtobeSearched){
+
+   int NMRopen = findNMRValue(NMRtobeSearched);
+   int POSValue = findPOSValue(NMRopen);
+   return POSValue;
+
+}
+
+void getFiles(){
+
+
+  deleteAllFiles();
+
   String payloadTAG = fetchData(URL_TAG);
   String payloadNMR = fetchData(URL_NMR);
   String payloadNMR_POS = fetchData(URL_NMR_POS);
@@ -38,19 +154,12 @@ void loop() {
 
     readAndPrintPayload("/data_tag.txt");
     readAndPrintPayload("/data_pos.txt");
-    int NMRopen = findNMRValue(1234);
-    //Serial.println(NMRopen);
-    int POSValue = findPOSValue(NMRopen);
-    Serial.println(POSValue);
 
-    deleteAllFiles();
   } else {
     Serial.println("Error in fetching data");
   }
 
-  delay(5000); // Wait for a few seconds before the next request
 }
-
 
 String fetchData(String fetchURL) {
   HTTPClient http;
