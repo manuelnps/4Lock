@@ -11,10 +11,6 @@
 #define SS_PIN 5
 #define RST_PIN 4
 
-String UID[] = {
-  "A9 56 6F 72",
-  "49 E9 DD 71"
-};
 
 LiquidCrystal_I2C lcd(0x3F, 16, 2);
 MFRC522 rfid(SS_PIN, RST_PIN);
@@ -26,6 +22,8 @@ String URL_TAG = "http://192.168.43.169/4lock_project/readdata_TAG.php";
 String URL_NMR = "http://192.168.43.169/4lock_project/readdata_NMR.php";
 String URL_POS = "http://192.168.43.169/4lock_project/readdata_POS.php";
 String URL_NMR_POS = "http://192.168.43.169/4lock_project/readdata_NMR_POS.php";
+
+String rfidTAG = "";
 
 const char* ntpServer = "pool.ntp.org";
 const long gmtOffset_sec = 0; // Your GMT offset in seconds6
@@ -70,14 +68,14 @@ void loop() {
   timeinfo = localtime(&now);
 
   /********************************Ficheiro diário*********************************************/
-  if (timeinfo->tm_hour == 15 &&
-      timeinfo->tm_min == 52 &&
-      timeinfo->tm_sec == 30) {
+  if (timeinfo->tm_hour == 16 &&
+      timeinfo->tm_min == 1 &&
+      timeinfo->tm_sec == 00) {
       getFiles();
   }
   /********************************************************************************************/
+  
   /**************************************Leitura da TAG****************************************/
-
 
   lcd.setCursor(4, 0);
   lcd.print("Bem-vindo!");
@@ -92,7 +90,6 @@ void loop() {
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Aguarde");
-  
   String ID = "";
   for (byte i = 0; i < rfid.uid.size; i++) {
     lcd.print(".");
@@ -103,32 +100,48 @@ void loop() {
   ID.toUpperCase();
 
   bool accessGranted = false;
-  for (int i = 0; i < sizeof(UID) / sizeof(UID[0]); i++) {
-    if (ID.substring(1) == UID[i]) {
+
+  int targetTAG = ID.substring(1).toInt();
+  int posValue = search(targetTAG);//USAR O SEARCH()
+  
+  if (posValue != -1 && posValue != 9999) {
       accessGranted = true;
-      break;
-    }
   }
-   /********************************************************************************************/
-  /*****************************Procura da posiçao do cacido***********************************/
-  int NMRPos = findNMRValue(int targetTAG)
-  /********************************************************************************************/
+
   if (accessGranted) {
     lcd.clear();
     lcd.setCursor(0, 0);
-    lcd.print(" Cacifo aberto");
+    lcd.print(" penis circuncizado !!!!");
+    lcd.setCursor(1,1);
+    lcd.print(posValue);
     delay(1500);
     lcd.clear();
-  } else {
+  } else if (posValue == 9999){
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print(" Cacifo aberto");
+      lcd.setCursor(1,1);
+      lcd.print(" Zona errada");
+      delay(1500);
+  }else{
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print(" Acesso negado");
+    lcd.setCursor(1, 1);
+    lcd.print(" N existe");
     delay(1500);
+    }
     lcd.clear();
   }
 
-}
-  
+
+   /********************************************************************************************/
+  /*****************************Procura da posiçao do cacido***********************************/
+  //VER ISSO
+  //int NMRPos = findNMRValue(int targetTAG)
+  /********************************************************************************************/
+ 
+
 
 int search(int NMRtobeSearched){
 
@@ -251,6 +264,7 @@ void readAndPrintPayload(const char *filename) {
   file.close();
 }
 
+
 int findNMRValue(int targetTAG) {
   File file = SPIFFS.open("/data_tag.txt", "r");
   if (!file) {
@@ -276,6 +290,34 @@ int findNMRValue(int targetTAG) {
   file.close();
   return -1; // Return a special value to indicate that the TAG was not found
 }
+
+/*
+int findNMRValue(int targetTAG) {
+  File file = SPIFFS.open("/data_tag.txt", "r");
+  if (!file) {
+    Serial.println("Failed to open file for reading");
+    return -1; // Return a special value to indicate an error
+  }
+
+  while (file.available()) {
+    String line = file.readStringUntil('\n');
+    line.trim(); // Remove leading/trailing whitespace
+    
+    int spaceIndex = line.indexOf(' ');
+    if (spaceIndex != -1) {
+      int tagValue = line.substring(spaceIndex + 1).toInt(); // Get the NMR value (changed from tagValue to nmrValue)
+      if (tagValue == targetTAG) {
+        int nmrValue = line.substring(0, spaceIndex).toInt(); // Get the TAG value (changed from nmrValue to tagValue)
+        file.close();
+        return nmrValue;
+      }
+    }
+  }
+
+  file.close();
+  return -1; // Return a special value to indicate that the TAG was not found
+}
+*/
 
 int findPOSValue(int targetNMR) {
   File file = SPIFFS.open("/data_pos.txt", "r");
