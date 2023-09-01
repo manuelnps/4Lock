@@ -11,6 +11,9 @@
 #define SS_PIN 5
 #define RST_PIN 4
 
+// Pinos para controlar o relé
+const int relayPin = 2;
+
 
 LiquidCrystal_I2C lcd(0x3F, 16, 2);
 MFRC522 rfid(SS_PIN, RST_PIN);
@@ -23,22 +26,17 @@ String URL_NMR = "http://192.168.43.169/4lock_project/readdata_NMR.php";
 String URL_POS = "http://192.168.43.169/4lock_project/readdata_POS.php";
 String URL_NMR_POS = "http://192.168.43.169/4lock_project/readdata_NMR_POS.php";
 
+struct fileUpdateTime{
+   int hour = 16 ; 
+   int minute = 24;
+   int second = 00;
+};
+
 String rfidTAG = "";
 
 const char* ntpServer = "pool.ntp.org";
 const long gmtOffset_sec = 0; // Your GMT offset in seconds6
 const int daylightOffset_sec = 3600; // Your daylight offset in seconds
-
-
-void syncNTPTime() {
-  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-  Serial.println("Waiting for NTP time synchronization...");
-  while (!time(nullptr)) {
-    delay(1000);
-    Serial.println("Waiting for NTP time...");
-  }
-  Serial.println("NTP time synchronized");
-}
 
 void setup() {
   Serial.begin(9600);
@@ -56,6 +54,9 @@ void setup() {
     Serial.println("An error occurred while mounting SPIFFS");
     while (1); // Halt the program
   }
+  
+  pinMode(relayPin, OUTPUT); // Configurar o pino do relé como saída
+  digitalWrite(relayPin, LOW); // Inicialmente, mantenha o relé desativado
 }
 
 void loop() {
@@ -68,13 +69,14 @@ void loop() {
   timeinfo = localtime(&now);
 
   /********************************Ficheiro diário*********************************************/
-  if (timeinfo->tm_hour == 16 &&
-      timeinfo->tm_min == 1 &&
-      timeinfo->tm_sec == 00) {
+  struct fileUpdateTime updateTime;  // Create an instance of the structure
+
+
+  if (timeinfo->tm_hour == updateTime.hour &&
+      timeinfo->tm_min == updateTime.minute &&
+      timeinfo->tm_sec == updateTime.second) {
       getFiles();
-  }
-  /********************************************************************************************/
-  
+  }  
   /**************************************Leitura da TAG****************************************/
 
   lcd.setCursor(4, 0);
@@ -111,37 +113,40 @@ void loop() {
   if (accessGranted) {
     lcd.clear();
     lcd.setCursor(0, 0);
-    lcd.print(" penis circuncizado !!!!");
+    lcd.print("Cacifo aberto");
     lcd.setCursor(1,1);
     lcd.print(posValue);
-    delay(1500);
+    digitalWrite(relayPin, HIGH); // Ativar o relé para abrir a fechadura
+    delay(4000);
+    digitalWrite(relayPin, LOW); // Desativar o relé
     lcd.clear();
   } else if (posValue == 9999){
       lcd.clear();
       lcd.setCursor(0, 0);
-      lcd.print(" Cacifo aberto");
+      lcd.print(" Acesso negado ");
       lcd.setCursor(1,1);
-      lcd.print(" Zona errada");
+      lcd.print(" N tem cacifo aqui");
       delay(1500);
   }else{
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print(" Acesso negado");
     lcd.setCursor(1, 1);
-    lcd.print(" N existe");
+    lcd.print(" N existe utilizador");
     delay(1500);
     }
     lcd.clear();
+}
+
+void syncNTPTime() {
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  Serial.println("Waiting for NTP time synchronization...");
+  while (!time(nullptr)) {
+    delay(1000);
+    Serial.println("Waiting for NTP time...");
   }
-
-
-   /********************************************************************************************/
-  /*****************************Procura da posiçao do cacido***********************************/
-  //VER ISSO
-  //int NMRPos = findNMRValue(int targetTAG)
-  /********************************************************************************************/
- 
-
+  Serial.println("NTP time synchronized");
+}
 
 int search(int NMRtobeSearched){
 
@@ -230,24 +235,6 @@ String combinePayloads(const String &payloadTAG, const String &payloadNMR) {
   return combinedData;
 }
 
-String parsePayload(const String &payload) {
-  String formattedData = "";
-
-  // Split the payload by commas
-  int startPos = 0;
-  int endPos;
-  while ((endPos = payload.indexOf(',', startPos)) != -1) {
-    String data = payload.substring(startPos, endPos);
-    formattedData += data + " " + String(2020 + startPos / 2) + "\n";
-    startPos = endPos + 1;
-  }
-  // Write the last data
-  String lastData = payload.substring(startPos);
-  formattedData += lastData + " " + String(2020 + startPos / 2) + "\n";
-
-  return formattedData;
-}
-
 void readAndPrintPayload(const char *filename) {
   File file = SPIFFS.open(filename, "r");
   if (!file) {
@@ -263,7 +250,6 @@ void readAndPrintPayload(const char *filename) {
 
   file.close();
 }
-
 
 int findNMRValue(int targetTAG) {
   File file = SPIFFS.open("/data_tag.txt", "r");
@@ -290,34 +276,6 @@ int findNMRValue(int targetTAG) {
   file.close();
   return -1; // Return a special value to indicate that the TAG was not found
 }
-
-/*
-int findNMRValue(int targetTAG) {
-  File file = SPIFFS.open("/data_tag.txt", "r");
-  if (!file) {
-    Serial.println("Failed to open file for reading");
-    return -1; // Return a special value to indicate an error
-  }
-
-  while (file.available()) {
-    String line = file.readStringUntil('\n');
-    line.trim(); // Remove leading/trailing whitespace
-    
-    int spaceIndex = line.indexOf(' ');
-    if (spaceIndex != -1) {
-      int tagValue = line.substring(spaceIndex + 1).toInt(); // Get the NMR value (changed from tagValue to nmrValue)
-      if (tagValue == targetTAG) {
-        int nmrValue = line.substring(0, spaceIndex).toInt(); // Get the TAG value (changed from nmrValue to tagValue)
-        file.close();
-        return nmrValue;
-      }
-    }
-  }
-
-  file.close();
-  return -1; // Return a special value to indicate that the TAG was not found
-}
-*/
 
 int findPOSValue(int targetNMR) {
   File file = SPIFFS.open("/data_pos.txt", "r");
