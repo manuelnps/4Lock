@@ -94,5 +94,10 @@ namespace UI_4Lock.UserControls
                 MessageBox.Show("Colaborador não tem balneário atribuído ainda.");
             }
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

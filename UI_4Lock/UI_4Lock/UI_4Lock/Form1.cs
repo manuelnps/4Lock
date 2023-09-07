@@ -11,6 +11,7 @@ using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using UI_4Lock.UserControls;
 using static UI_4Lock.GlobalData;
+using System.IO.Ports;
 
 namespace UI_4Lock
 {
@@ -20,9 +21,50 @@ namespace UI_4Lock
         public static string NMR;
         public static string ZPROX;
         public static string tablename;
+
+        //private SerialPort serialPort;
+        private SerialPort comPort;
         public Form1()
         {
             InitializeComponent();
+            //InitializeSerialPort();
+            comPort = ComPortManager.GetSerialPort();
+            comPort.DataReceived += SerialPort_DataReceived;
+        }
+
+        //private void InitializeSerialPort()
+        //{
+        //    serialPort = new SerialPort("COM5", 9600); // Substitua pela porta COM correta e pela taxa de transmissão
+
+        //    try
+        //    {
+        //        serialPort.Open();
+        //        serialPort.DataReceived += SerialPort_DataReceived;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Erro ao abrir a porta serial: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
+
+        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            //string cardNumber = serialPort.ReadLine().Trim(); // Lê o número do cartão e remove espaços em branco
+            //UpdateTextBox(cardNumber);
+            string cardNumber = comPort.ReadLine().Trim();
+            UpdateTextBox(cardNumber);
+        }
+
+        private void UpdateTextBox(string cardNumber)
+        {
+            if (textBox1.InvokeRequired)
+            {
+                textBox1.Invoke(new Action<string>(UpdateTextBox), new object[] { cardNumber });
+            }
+            else
+            {
+                textBox1.Text = cardNumber;
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -84,7 +126,9 @@ namespace UI_4Lock
         {
             MySqlConnection connection = new MySqlConnection(GlobalData.Connect());
             connection.Open();
-            MySqlCommand login = new MySqlCommand("select CARGO from tag_cargo where TAG = '" + int.Parse(textBox1.Text) + "'", connection);
+            string tagValue = textBox1.Text; // Assumindo que o valor lido da tag está na textBox1
+            MySqlCommand login = new MySqlCommand("select CARGO from tag_cargo where TAG = @tag", connection);
+            login.Parameters.AddWithValue("@tag", tagValue);
             MySqlDataReader reader = login.ExecuteReader();
 
 
@@ -95,7 +139,7 @@ namespace UI_4Lock
                 {
                     reader.Close();
                     MySqlCommand getNMR = new MySqlCommand("select NMR, ZPROX from tag_cargo where TAG = " + "@tag" + "", connection);
-                    getNMR.Parameters.AddWithValue("@tag", int.Parse(textBox1.Text));
+                    getNMR.Parameters.AddWithValue("@tag", tagValue);
                     MySqlDataReader readNMR = getNMR.ExecuteReader();
                     //arranjar a string
                     if (readNMR.Read())
@@ -113,7 +157,7 @@ namespace UI_4Lock
                 {
                     reader.Close();
                     MySqlCommand getNMR = new MySqlCommand("select NMR, ZPROX from tag_cargo where TAG = " + "@tag" + "", connection);
-                    getNMR.Parameters.AddWithValue("@tag", int.Parse(textBox1.Text));
+                    getNMR.Parameters.AddWithValue("@tag", tagValue);
                     MySqlDataReader readNMR = getNMR.ExecuteReader();
                     //arranjar a string
                     if (readNMR.Read())
@@ -159,6 +203,17 @@ namespace UI_4Lock
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Feche a porta COM quando o formulário estiver prestes a ser fechado
+            ComPortManager.CloseSerialPort();
         }
     }
 }

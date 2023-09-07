@@ -22,17 +22,17 @@ namespace UI_4Lock
 
             public Connection()
             {
-                this.server = "172.32.146.209";
-                this.uid = "root";
-                this.pwd = "";
-                this.database = "4lock";
+                this.server = "127.0.0.1"; //192.168.43.169
+                this.uid = "Cacifos";
+                this.pwd = "1234";
+                this.database = "project4lock";
             }
         }
 
         public static string Connect()
         {
             Connection connection = new Connection();
-            string settings = "server=" + connection.server + ";uid=" + connection.uid + ";pwd=" + connection.pwd + ";database=" + connection.database;
+            string settings = "server=" + connection.server + ";uid=" + connection.uid + ";pwd=" + connection.pwd + ";port=3306" +  ";database=" + connection.database;
             return settings;
             //"server=localhost;uid=root;pwd=Horsegrupo4;database=4lock";
         }

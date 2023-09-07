@@ -43,7 +43,7 @@ namespace UI_4Lock
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            RemoverColaborador uc = new RemoverColaborador();
+            AdicionarColaborador uc = new AdicionarColaborador();
             addUserControl(uc);
         }
 
@@ -62,6 +62,12 @@ namespace UI_4Lock
         private void guna2Button3_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void guna2Button5_Click(object sender, EventArgs e)
+        {
+            RemoverColaborador uc = new RemoverColaborador();
+            addUserControl(uc);
         }
     }
 }

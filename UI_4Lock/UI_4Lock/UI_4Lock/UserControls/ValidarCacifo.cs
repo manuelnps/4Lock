@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+//using System.Net.Mail;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +10,10 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using System.IO;
 
 //falar com o tiago porque a parte de validaçao diz que esta a inserir duplicado ?
 
@@ -22,6 +28,12 @@ namespace UI_4Lock.UserControls
         public ValidarCacifo()
         {
             InitializeComponent();
+        }
+
+        private void ValidarCacifo_Load(object sender, EventArgs e)
+        {
+            guna2Button2.Text = "Enviar E-mail"; // Texto do botão
+            guna2Button2.Click += guna2Button2_Click; // Associa o evento de clique ao botão
         }
 
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -109,6 +121,77 @@ namespace UI_4Lock.UserControls
                     MessageBox.Show("Ocorreu um erro", "ERRO FATAL", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 connection.Close();
+            }
+        }
+
+        private void guna2Button2_Click(object sender, EventArgs e)
+        {
+            // Informações do remetente
+            string remetenteEmail = "bruna.ramos.pires98@gmail.com";
+            string remetenteSenha = "ertpyvyiyxwauvwx";
+
+            // Lista de destinatários
+            List<string> destinatarios = new List<string>
+{
+                "bruna.pires-extern@renault.com",   //Enviar e-mail para o CUET
+                "manuel.silva-extern@renault.com",  //Enviar e-mail para os RH
+                "duarte.jorge-extern@renault.com"   //Enviar e-mail para a CT                             
+};
+
+            // Configuração do servidor SMTP
+            string smtpHost = "smtp.gmail.com";
+            int smtpPort = 587;
+
+            try
+            {
+                foreach (var destinatario in destinatarios)
+                {
+                    var message = new MimeMessage();
+                    message.From.Add(new MailboxAddress("Remetente", remetenteEmail));
+                    message.To.Add(new MailboxAddress("", destinatario));
+                    message.Subject = "Aviso de Abertura de Cacifo Forçada";
+
+                    // Verifica se algum item foi marcado no CheckedListBox
+                    List<int> numerosSelecionados = new List<int>();
+                    foreach (int index in checkedListBox1.CheckedIndices)
+                    {
+                        numerosSelecionados.Add(Convert.ToInt32(checkedListBox1.Items[index]));
+                    }
+
+                    if (numerosSelecionados.Count > 0)
+                    {
+                        // Gera um código de validação aleatório para cada destinatário
+                        int codigo = CodigoGerado.GerarCodigo(); // Certifique-se de que esta função existe e gera um código aleatório
+
+                        var builder = new BodyBuilder();
+                        builder.TextBody = $"Notificação para abertura de cacifo forçada. De forma a validar esta abertura, referente ao(s) cacifo(s) - {string.Join(", ", numerosSelecionados)} - segue-se abaixo o código de validação.\n\nCódigo de validação: {codigo}";
+                        message.Body = builder.ToMessageBody();
+
+                        using (var client = new SmtpClient())
+                        {
+                            client.Connect(smtpHost, smtpPort, SecureSocketOptions.StartTls);
+                            client.Authenticate(remetenteEmail, remetenteSenha);
+                            client.Send(message);
+                            client.Disconnect(true);
+                        }
+
+                        MessageBox.Show($"E-mail enviado com sucesso para {destinatario}!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        // Após enviar o e-mail com sucesso, armazene o código gerado e o destinatário no arquivo
+                        using (StreamWriter writer = new StreamWriter("caminho_do_arquivo.txt", true))
+                        {
+                            writer.WriteLine($"{destinatario}:{codigo}");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Por favor, selecione pelo menos um número na lista.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao enviar os e-mails: " + ex.Message);
             }
         }
     }

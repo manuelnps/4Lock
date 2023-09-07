@@ -35,11 +35,11 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Font = new System.Drawing.Font("Montserrat ExtraBold", 14.25F, System.Drawing.FontStyle.Bold);
-            this.richTextBox1.Location = new System.Drawing.Point(396, 213);
+            this.richTextBox1.Font = new System.Drawing.Font("Calibri", 12F);
+            this.richTextBox1.Location = new System.Drawing.Point(396, 211);
             this.richTextBox1.Margin = new System.Windows.Forms.Padding(4);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(296, 52);
+            this.richTextBox1.Size = new System.Drawing.Size(270, 50);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
@@ -54,15 +54,15 @@
             this.guna2Button4.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.guna2Button4.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.guna2Button4.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.guna2Button4.FillColor = System.Drawing.Color.Black;
+            this.guna2Button4.FillColor = System.Drawing.Color.MediumSeaGreen;
             this.guna2Button4.Font = new System.Drawing.Font("Century Gothic", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.guna2Button4.ForeColor = System.Drawing.Color.White;
             this.guna2Button4.HoverState.CustomBorderColor = System.Drawing.Color.Gray;
             this.guna2Button4.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.guna2Button4.Location = new System.Drawing.Point(405, 309);
+            this.guna2Button4.Location = new System.Drawing.Point(396, 313);
             this.guna2Button4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.guna2Button4.Name = "guna2Button4";
-            this.guna2Button4.Size = new System.Drawing.Size(273, 63);
+            this.guna2Button4.Size = new System.Drawing.Size(270, 70);
             this.guna2Button4.TabIndex = 4;
             this.guna2Button4.Text = "Remover Colaborador";
             this.guna2Button4.Click += new System.EventHandler(this.guna2Button4_Click);
@@ -70,12 +70,12 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(289, 136);
+            this.label1.Font = new System.Drawing.Font("Calibri", 15F, System.Drawing.FontStyle.Bold);
+            this.label1.Location = new System.Drawing.Point(369, 115);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(517, 39);
+            this.label1.Size = new System.Drawing.Size(341, 31);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Inserir Número de Colaborador";
+            this.label1.Text = "Inserir Número de Colaborador:";
             // 
             // RemoverColaborador
             // 
